@@ -7,7 +7,7 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
  * Nginx
  * PHP 7.0(5.6+)
  * Kiaalap Template : https://github.com/puikinsh/kiaalap
- * Showdown v1.50 : https://iodides.tistory.com/7
+ * Showdown v1.51 : https://iodides.tistory.com/7
  
 ## 설치 방법 by Synology DSM 6.0
  ```
@@ -75,7 +75,11 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
         모니터링 관련 Client 명령어 처리 부분 DB Access로 변경
         config.php 설정에 자동 접속 페이지를 설정할 수 있는 start_page 추가 
         Episode Page 오픈시 제일 하단으로 자동 스크롤 추가
-     
+    * v0.5.1 / 20190516
+        1000개 이상 되는 에피소드 정렬 이슈 수정 
+        
+## 알려진 버그
+    * 현재 500개 이상되는 에피소드를 가진 방송의 경우 모든 에피소드 정보가 안보여 지는 이슈
     
 ## 남기는 말
   먼저 Showdown을 제작 및 공개해주신 iodides님께 감사드립니다.<br>

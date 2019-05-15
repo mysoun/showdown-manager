@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="footer-copy-right">
-                    <p>Showdown Manager <?=$showdown_manager_ver;?> Make by 룡룡이, Showdown <?=$showdown_min_ver;?> Require, Thank you iodides!</p>
+                    <p>Showdown Manager <?=$showdown_manager_ver;?> Make by 룡룡이, Showdown <?=$showdown_min_ver;?> Require, Thank you for iodides!</p>
                 </div>
             </div>
         </div>
