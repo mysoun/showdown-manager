@@ -7,8 +7,7 @@
     $db = new PDO('sqlite:' . $sqlite_db );
     $db->setAttribute(PDO::ATTR_ERRMODE,
         PDO::ERRMODE_EXCEPTION);
-    $db->setAttribute(PDO::SQLITE_ATTR_OPEN_FLAGS,
-        10000);
+
     $sm = new ShowdownManager\SM( $http_path, $client_path, $start_page, $JAVA_HOME );
 
     $_GET['status'] = (!$_GET['status']) ? $start_page : $_GET['status'];
