@@ -82,6 +82,13 @@
 </html>
 
 <script>
+    $("#modal-episode-table-list").on("hidden.bs.modal", function () {
+        location.reload();
+    }).on('shown.bs.modal', function () {
+        $(this).animate({ scrollTop: $(".modal-episode-content").height() }, "slow");
+    });
+
+
     $(".btn-monitor").on('click', function () {
         if ( btn_lock == false ) {
             btn_lock = true;
@@ -221,6 +228,8 @@
             });
 
             $("#modal-episode-table-list").modal('show');
+            //.animate({ scrollTop: $(".modal-episode-content").height() }, "slow");
+
         });
     }
 

@@ -1,2 +1,2 @@
 <?php
-HEADER("Location:./drama.php");
+HEADER("Location:./on_air.php");

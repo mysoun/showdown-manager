@@ -1,38 +1,68 @@
 <?php
     include_once ("./config.php");
+    include_once ("./ShowdownManager.php");
 
     $sqlite_db = $client_path."/SQLDB.db";
-    $PATH = "$JAVA_HOME/bin:/usr/local/bin:/usr/bin:/bin";
 
     $db = new PDO('sqlite:' . $sqlite_db );
     $db->setAttribute(PDO::ATTR_ERRMODE,
         PDO::ERRMODE_EXCEPTION);
-    //$db->query("PRAGMA synchronous = OFF");
 
-    function drama_monitor_info( $db, $sid, $hd, $fhd ) {
-        $result = [];
+    $sm = new ShowdownManager\SM( $http_path, $client_path, $start_page, $JAVA_HOME );
 
-        $result_hd_ep = $db->query("SELECT COUNT(EPISODE) as EP_CNT FROM DRAMA_EPISODE WHERE SID = {$sid} AND QUALITY = '720P'");
-        $result_hd_ep_cnt = $result_hd_ep->fetch();
-
-        $result_hd_ep = $db->query("SELECT COUNT(EPISODE) as EP_CNT FROM DRAMA_EPISODE WHERE SID = {$sid} AND QUALITY = '720P' AND DOWNLOAD = 'Y'");
-        $result_hd_ep_down_cnt = $result_hd_ep->fetch();
-
-        $result['hd'] = ( $hd == "Y" ) ? "<button class='btn-episode ps-setting' sid='{$sid}' genre='drama' resolution='720p'>{$result_hd_ep_down_cnt['EP_CNT']}/{$result_hd_ep_cnt['EP_CNT']}</button>" : "";
-
-        $result_fhd_ep = $db->query("SELECT COUNT(EPISODE) as EP_CNT FROM DRAMA_EPISODE WHERE SID = {$sid} AND QUALITY = '1080P'");
-        $result_fhd_ep_cnt = $result_fhd_ep->fetch();
-
-        $result_fhd_ep = $db->query("SELECT COUNT(EPISODE) as EP_CNT FROM DRAMA_EPISODE WHERE SID = {$sid} AND QUALITY = '1080P' AND DOWNLOAD = 'Y'");
-        $result_fhd_ep_down_cnt = $result_fhd_ep->fetch();
-
-        $result['fhd'] = ( $fhd == "Y" ) ? "<button class='btn-episode ps-setting' sid='{$sid}' genre='drama' resolution='1080p'>{$result_fhd_ep_down_cnt['EP_CNT']}/{$result_fhd_ep_cnt['EP_CNT']}</button>" : "";
-
-        return $result;
+    $_GET['status'] = (!$_GET['status']) ? $start_page : $_GET['status'];
+    switch( $_GET['status'] ) {
+        case 1 :
+        default :
+            $title = '1. 드라마(미방영)';
+            $genre_table_name = 'DRAMA_LIST';
+            $genre_episode_table_name = 'DRAMA_EPISODE';
+            $genre_where = "STATUS = 1";
+            $genre = "drama";
+            break;
+        case 2 :
+            $title = '2. 드라마(방영중)';
+            $genre_table_name = 'DRAMA_LIST';
+            $genre_episode_table_name = 'DRAMA_EPISODE';
+            $genre_where = "STATUS = 2";
+            $genre = "drama";
+            break;
+        case 3 :
+            $title = '3. 드라마(종방영)';
+            $genre_table_name = 'DRAMA_LIST';
+            $genre_episode_table_name = 'DRAMA_EPISODE';
+            $genre_where = "STATUS = 3";
+            $genre = "drama";
+            break;
+        case 4 :
+            $title = '4. 예능(방영중)';
+            $genre_table_name = 'ENTER_LIST';
+            $genre_episode_table_name = 'ENTER_EPISODE';
+            $genre_where = "STATUS = 1 OR STATUS = 2";
+            $genre = "enter";
+            break;
+        case 5 :
+            $title = '5. 예능(방영종료)';
+            $genre_table_name = 'ENTER_LIST';
+            $genre_episode_table_name = 'ENTER_EPISODE';
+            $genre_where = "STATUS = 3";
+            $genre = "enter";
+            break;
+        case 6 :
+            $title = '6. TV(방영중)';
+            $genre_table_name = 'TV_LIST';
+            $genre_episode_table_name = 'TV_EPISODE';
+            $genre_where = "STATUS = 1 OR STATUS = 2";
+            $genre = "tv";
+            break;
+        case 7 :
+            $title = '7. TV(방영종료)';
+            $genre_table_name = 'TV_LIST';
+            $genre_episode_table_name = 'TV_EPISODE';
+            $genre_where = "STATUS = 3";
+            $genre = "tv";
+            break;
     }
 
-    function get_system_call( $cmd ) {
-        $last_line = exec( $cmd, $return_var );
-
-        return [ 'last_line' => $last_line, 'return_var' => $return_var ];
-    }
+    // 방송 목록
+    $result = $sm->getOnAirList( $db, $genre_table_name, $genre_where);

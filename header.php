@@ -81,16 +81,20 @@
                                         <ul class="nav navbar-nav mai-top-nav">
                                             <li class="nav-item"><a href="#" class="nav-link">Showdown Manager</a>
                                             </li>
-                                            <li class="nav-item"><a href="./drama.php?status=1" class="nav-link">1. 드라마(예정)</a>
+                                            <li class="nav-item"><a href="on_air.php?status=1" class="nav-link">1. 드라마(예정)</a>
                                             </li>
-                                            <li class="nav-item"><a href="./drama.php?status=2" class="nav-link">2. 드라마(방영중)</a>
+                                            <li class="nav-item"><a href="on_air.php?status=2" class="nav-link">2. 드라마(방영중)</a>
                                             </li>
-                                            <li class="nav-item"><a href="./drama.php?status=3" class="nav-link">3. 드라마(완료)</a>
+                                            <li class="nav-item"><a href="on_air.php?status=3" class="nav-link">3. 드라마(종료)</a>
                                             </li>
-                                            <!--li class="nav-item"><a href="#" class="nav-link">4. 예능</a>
+                                            <li class="nav-item"><a href="on_air.php?status=4" class="nav-link">4. 예능(방영중)</a>
                                             </li>
-                                            <li class="nav-item"><a href="#" class="nav-link">5. TV</a>
-                                            </li-->
+                                            <li class="nav-item"><a href="on_air.php?status=5" class="nav-link">5. 예능(종료)</a>
+                                            </li>
+                                            <li class="nav-item"><a href="on_air.php?status=6" class="nav-link">6. TV(방영중)</a>
+                                            </li>
+                                            <li class="nav-item"><a href="on_air.php?status=7" class="nav-link">7. TV(종료)</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>

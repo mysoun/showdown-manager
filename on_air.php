@@ -2,23 +2,6 @@
     include_once("./php_header.php");
     include_once("./header.php");
 
-    $_GET['status'] = (!$_GET['status']) ? 1 : $_GET['status'];
-    switch( $_GET['status'] ) {
-        case 1 :
-        default :
-            $_GET['status'] = 1;
-            $title = '1. 드라마(미방영)';
-            break;
-        case 2 :
-            $title = '2. 드라마(방영중)';
-            break;
-        case 3 :
-            $title = '3. 드라마(종방영)';
-            break;
-    }
-    $result = $db->query("SELECT * FROM DRAMA_LIST WHERE STATUS = {$_GET['status']} ORDER BY NAME");
-
-    $i = 0;
 ?>
     <div class="product-status mg-b-15">
         <div class="container-fluid">
@@ -41,11 +24,14 @@
                                     <th class="text-center">기능</th>
                                 </tr>
                                 <?php
-                                //
+                                    $i = 0;
                                     foreach( $result as $v ) {
+                                        // 숫자가 아닐 경우 pass
+                                        if ( !is_numeric( $v['SID'] ) ) continue;
+
                                         $i++;
 
-                                        $monitor_info = drama_monitor_info( $db, $v['SID'], $v['MONITOR_HD'], $v['MONITOR_FHD'] );
+                                        $monitor_info = $sm->monitor_info( $db, $genre_episode_table_name, $genre, $v['SID'], $v['MONITOR_HD'], $v['MONITOR_FHD'] );
 
                                         echo <<<EOF
                                 <tr>
@@ -53,7 +39,7 @@
                                     <td class="text-center"><img src="{$v['THUMB']}" alt="" /></td>
                                     <td>
                                         {$v['NAME']}
-                                        <button data-toggle="tooltip" title="제목 수정" class="pd-setting-ed btn-title-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                        <!--button data-toggle="tooltip" title="제목 수정" class="pd-setting-ed btn-title-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button-->
                                     </td>
                                     <td class="text-center">{$v['SEASON']}</td>
                                     <td class="text-center">{$v['AIR_DATE']}</td>
@@ -62,8 +48,8 @@
                                     <td class="text-center">{$monitor_info['hd']}</td>
                                     <td class="text-center">{$monitor_info['fhd']}</td>
                                     <td class="text-center">
-                                        <button data-toggle="tooltip" title="720p 모니터링 On/Off" class="btn-monitor pd-setting-ed" sid="{$v['SID']}" genre="drama" resolution="720p">HD</button>
-                                        <button data-toggle="tooltip" title="1080p 모니터링 On/Off" class="btn-monitor pd-setting-ed" sid="{$v['SID']}" genre="drama" resolution="1080p">FHD</button>
+                                        <button data-toggle="tooltip" title="720p 모니터링 On/Off" class="btn-monitor pd-setting-ed" sid="{$v['SID']}" genre="{$genre}" resolution="720p">HD</button>
+                                        <button data-toggle="tooltip" title="1080p 모니터링 On/Off" class="btn-monitor pd-setting-ed" sid="{$v['SID']}" genre="{$genre}" resolution="1080p">FHD</button>
                                     </td>
                                 </tr>
 EOF;

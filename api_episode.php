@@ -3,50 +3,14 @@
 
     $json_result = [];
 
-    switch( $_GET['genre'] ) {
-        case 'drama' :
-            $table_name = 'DRAMA_LIST';
-            $ep_table_name = 'DRAMA_EPISODE';
-            break;
-        case 'tv' :
-        case 'enter' :
-            $table_name = 'TV_LIST';
-            $ep_table_name = 'TV_EPISODE';
-            break;
+    $sm->genre = $_GET['genre'];
+    $sm->sid = $_GET['sid'];
 
-        default :
-            exit;
-    }
+    $sm->set_table_name();
 
-    $sid = $_GET['sid'];
-
-    $result = $db->query( "SELECT * FROM {$table_name} WHERE SID = {$sid}");
-    $result = $result->fetch();
-
-    $result_ep = $db->query("SELECT * FROM {$ep_table_name} WHERE SID = {$sid}");
-
-    $episode_rework = [];
-
-    foreach ( $result_ep as $v ) {
-        $ep_no = (int)substr( $v['EPISODE'], 1, 3);
-
-        if ( $v['QUALITY'] == '720P' ) {
-            $episode_rework[ $ep_no ]['720-E'] = $v['EPISODE'];
-            $episode_rework[ $ep_no ]['720-A'] = $v['AIR_DATE'];
-            $episode_rework[ $ep_no ]['720-M'] = $v['MONITOR'];
-            $episode_rework[ $ep_no ]['720-D'] = $v['DOWNLOAD'];
-            $episode_rework[ $ep_no ]['720-C'] = $v['COMPLETE'];
-        } elseif( $v['QUALITY'] == '1080P' ) {
-            $episode_rework[ $ep_no ]['1080-E'] = $v['EPISODE'];
-            $episode_rework[ $ep_no ]['1080-A'] = $v['AIR_DATE'];
-            $episode_rework[ $ep_no ]['1080-M'] = $v['MONITOR'];
-            $episode_rework[ $ep_no ]['1080-D'] = $v['DOWNLOAD'];
-            $episode_rework[ $ep_no ]['1080-C'] = $v['COMPLETE'];
-        }
-    }
+    $episode_rework = $sm->get_episode_list( $db );
 
     ob_start();
-    ksort($episode_rework);
 ?>
 <div class="product-status-wrap">
     <div class="asset-inner">
@@ -84,7 +48,7 @@ EOF;
     </div>
 </div>
 <?php
-    $json_result['title'] = $result['NAME'];
+    $json_result['title'] = $sm->title;
     $json_result['content'] = ob_get_contents();
     ob_end_clean();
 
