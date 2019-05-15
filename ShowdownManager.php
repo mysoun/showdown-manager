@@ -222,7 +222,7 @@ class SM
         $episode_rework = [];
 
         foreach ( $result_ep as $v ) {
-            $ep_no = (int)substr( $v['EPISODE'], 1, 3);
+            $ep_no = (int)substr( $v['EPISODE'], 1, 4);
 
             if ( $v['QUALITY'] == '720P' ) {
                 $episode_rework[ $ep_no ]['720-E'] = $v['EPISODE'];
