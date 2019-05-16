@@ -40,11 +40,6 @@ class SM
         putenv("LANG=ko_KR.UTF-8");
     }
 
-    function __destruct()
-    {
-        unset($this);
-    }
-
     public function getOnAirList( &$db, $genre_table_name, $genre_where ) {
         $result = $db->query("SELECT * FROM {$genre_table_name} WHERE {$genre_where} ORDER BY NAME");
 
