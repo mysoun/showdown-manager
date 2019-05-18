@@ -95,6 +95,11 @@
                                             </li>
                                             <li class="nav-item"><a href="on_air.php?status=7" class="nav-link">7. TV(종료)</a>
                                             </li>
+                                            <?php
+                                            if ( $show_log_menu == 'Y' ) {
+                                                echo '<li class="nav-item"><a href="log.php" class="nav-link">8. 금일 로그</a></li>';
+                                            }
+                                            ?>
                                         </ul>
                                     </div>
                                 </div>

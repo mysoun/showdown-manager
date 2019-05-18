@@ -47,6 +47,7 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
             $http_path = ""; // Showdown Manager 설치되어 있는 디렉토리
             $client_path = ""; // Showdown 설치되어 있는 디렉토리
             $start_page = 1; // 메뉴 번호 1~7
+            $show_log_menu = 'N'; // Y or N, Linux 기반(시놀로지 포함) 사용자의 경우 showdown의 실행 권한을 showdown-manager web 실행 권한(ex. http)과 showdown 파일들의 소유자를 같이 맞출 필요가 있음
         
             $JAVA_HOME = "/var/packages/Java8/target/j2sdk-image/jre"; // 시스템의 $JAVA_HOME 위치
             
@@ -80,7 +81,14 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
     * v0.5.2 / 20190516
         모바일 페이지 대응
         class destruct 오류 제거
-           
+    * v0.5.3 / 20190517
+        Showdown Log 페이지 추가
+        - ShowDown.log 파일에서 최대 500 line의 로그를 시간 역순으로 출력합니다.
+    * v0.5.4 / 20190518
+        Showdown Log Page On/Off 설정 추가
+        - Linux 기반(시놀로지 포함) 사용자의 경우 showdown의 실행 권한을 showdown-manager web 실행 권한(ex. http)과 showdown 파일들의 소유자를 같이 맞출 필요가 있음
+        - 다른 유저 권한으로 실행 방법 ex) sudo -u http "nohup ./start.sh &"
+                   
 ## 알려진 버그
     * 현재 500개 이상되는 에피소드를 가진 방송의 경우 모든 에피소드 정보가 안보여 지는 이슈
     
