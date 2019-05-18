@@ -47,7 +47,10 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
             $http_path = ""; // Showdown Manager 설치되어 있는 디렉토리
             $client_path = ""; // Showdown 설치되어 있는 디렉토리
             $start_page = 1; // 메뉴 번호 1~7
-            $show_log_menu = 'N'; // Y or N, Linux 기반(시놀로지 포함) 사용자의 경우 showdown의 실행 권한을 showdown-manager web 실행 권한(ex. http)과 showdown 파일들의 소유자를 같이 맞출 필요가 있음
+
+            // 시놀로지의 경우 폴더 권한에 자식 폴더 및 파일 포함 http 권한 설정 필요
+            // Linux 기반사 용자의 경우 showdown의 실행 권한을 showdown-manager web 실행 권한(ex. http)과 showdown 파일들의 소유자를 같이 맞출 필요가 있음
+            $show_log_menu = 'N'; 
         
             $JAVA_HOME = "/var/packages/Java8/target/j2sdk-image/jre"; // 시스템의 $JAVA_HOME 위치
             
@@ -86,7 +89,8 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
         - ShowDown.log 파일에서 최대 500 line의 로그를 시간 역순으로 출력합니다.
     * v0.5.4 / 20190518
         Showdown Log Page On/Off 설정 추가
-        - Linux 기반(시놀로지 포함) 사용자의 경우 showdown의 실행 권한을 showdown-manager web 실행 권한(ex. http)과 showdown 파일들의 소유자를 같이 맞출 필요가 있음
+        - 시놀로지의 경우 폴더 권한에 자식 폴더 및 파일 포함 http 권한 설정 필요
+        - Linux 기반사 용자의 경우 showdown의 실행 권한을 showdown-manager web 실행 권한(ex. http)과 showdown 파일들의 소유자를 같이 맞출 필요가 있음
         - 다른 유저 권한으로 실행 방법 ex) sudo -u http "nohup ./start.sh &"
                    
 ## 알려진 버그
