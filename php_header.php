@@ -1,7 +1,7 @@
 <?php
     include_once ("./config.php");
 
-    if ( basename($_SERVER['PHP_SELF']) == 'on_air.php' ) {
+    if ( basename($_SERVER['PHP_SELF']) != 'log.php' ) {
         include_once ("./ShowdownManager.php");
 
         $sqlite_db = $client_path."/SQLDB.db";

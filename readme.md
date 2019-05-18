@@ -92,7 +92,9 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
         - 시놀로지의 경우 폴더 권한에 자식 폴더 및 파일 포함 http 권한 설정 필요
         - Linux 기반사 용자의 경우 showdown의 실행 권한을 showdown-manager web 실행 권한(ex. http)과 showdown 파일들의 소유자를 같이 맞출 필요가 있음
         - 다른 유저 권한으로 실행 방법 ex) sudo -u http "nohup ./start.sh &"
-                   
+    * v0.5.5 / 20190519
+        Hot fix
+    
 ## 알려진 버그
     * 현재 500개 이상되는 에피소드를 가진 방송의 경우 모든 에피소드 정보가 안보여 지는 이슈
     
