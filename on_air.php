@@ -1,7 +1,7 @@
 <?php
     include_once("./php_header.php");
     include_once("./header.php");
-
+    include_once("./menu.php");
 ?>
     <div class="product-status mg-b-15">
         <div class="container-fluid">

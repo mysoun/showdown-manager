@@ -7,7 +7,7 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
  * Nginx
  * PHP 7.0(5.6+)
  * Kiaalap Template : https://github.com/puikinsh/kiaalap
- * Showdown v1.51 : https://iodides.tistory.com/7
+ * Showdown v1.52 : https://iodides.tistory.com/15
  
 ## 설치 방법 by Synology DSM 6.0
  ```
@@ -46,14 +46,19 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
         
             $http_path = ""; // Showdown Manager 설치되어 있는 디렉토리
             $client_path = ""; // Showdown 설치되어 있는 디렉토리
+            $merge_tv_enter = 'N'; // Y or N, Showdown 1.52에 추가된 TV/Enter의 방영 예정을 합쳐서 보여줄지 나눠줄지 선택하는 부분
             $start_page = 1; // 메뉴 번호 1~7
+
+            // Showdown Manager 접속 ID/Passwd 설정. 미설정시 인증 Pass
+            $manager_id = '';
+            $manager_passwd = '';
 
             // 시놀로지의 경우 폴더 권한에 자식 폴더 및 파일 포함 http 권한 설정 필요
             // Linux 기반사 용자의 경우 showdown의 실행 권한을 showdown-manager web 실행 권한(ex. http)과 showdown 파일들의 소유자를 같이 맞출 필요가 있음
             $show_log_menu = 'N'; 
         
             $JAVA_HOME = "/var/packages/Java8/target/j2sdk-image/jre"; // 시스템의 $JAVA_HOME 위치
-            
+
     10. Showdown Server 구동 및 구동 확인
         $ nohup ./start.sh &
         $ ps axf | grep java
@@ -94,7 +99,18 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
         - 다른 유저 권한으로 실행 방법 ex) sudo -u http "nohup ./start.sh &"
     * v0.5.5 / 20190519
         Hot fix
-    
+    * v0.6.3 / 20190525
+        Docker 대응 기능 추가
+        - 아래의 Docker Hub 에서 Showdown Manager 설치 가능
+        - https://hub.docker.com/r/kumryung/showdown-manager
+        Login 기능 추가
+        - config.php에 관련된 추가 항목 있음, 둘다 미설정시 인증 Pass
+        - $manager_id : 로그인 ID 
+        - $manager_passwd : 로그인 Password
+        showdown 1.52(Beta) 업데이트 대응 관련 메뉴 번호 변경 및 기능 추가
+        - config.php에 관련된 추가 항목 있음
+        - $merge_tv_enter = 'N'; // Y or N, Showdown 1.52에 추가된 TV/Enter의 방영 예정을 합쳐서 보여줄지 나눠줄지 선택하는 부분 
+            
 ## 알려진 버그
     * 현재 500개 이상되는 에피소드를 가진 방송의 경우 모든 에피소드 정보가 안보여 지는 이슈
     

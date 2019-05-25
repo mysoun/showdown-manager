@@ -1,5 +1,21 @@
 <?php
     include_once("./php_header.php");
+    switch( $_GET['type'] ) {
+        case 'auth' :
+            if ( $manager_id == trim($_POST['username']) && $manager_passwd == trim($_POST['password']) ) {
+                $_SESSION['sm-auth'] = true;
+                echo 'true';
+            } else {
+                echo 'false';
+            }
+            exit;
+            break;
+        case 'logout' :
+            unset($_SESSION['sm-auth']);
+            HEADER("Location:./login.php");
+            exit;
+            break;
+    }
 
     $sm->genre = $_GET['genre'];
     $sm->resolution = $_GET['resolution'];

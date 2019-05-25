@@ -194,6 +194,34 @@
         call_episode_action( sid, genre, resolution, type );
     });
 
+    $("#loginForm").on("submit", function() {
+        event.preventDefault();
+
+        var username = $("#username").val();
+        var password = $("#password").val();
+
+        if ( btn_lock == false ) {
+            btn_lock = true;
+            var data = {
+                username: username,
+                password: password
+            };
+            $.ajax({
+                url: "./api.php?type=auth",
+                data: data,
+                type: 'POST'
+            }).done(function (msg) {
+                btn_lock = false;
+                if ( msg == 'true') {
+                    location.href = "./on_air.php";
+                } else {
+                    alert('로그인 정보를 정확히 입력해 주세요.' );
+                    $("#username").focus();
+                };
+
+            });
+        };
+    });
 
     function call_episode( sid, genre ) {
         var data = {
