@@ -26,13 +26,7 @@
             }
             include_once ("./ShowdownManager.php");
 
-            $sqlite_db = $client_path."/SQLDB.db";
-
-            $db = new PDO('sqlite:' . $sqlite_db );
-            $db->setAttribute(PDO::ATTR_ERRMODE,
-                PDO::ERRMODE_EXCEPTION);
-
-            $sm = new ShowdownManager\SM( $http_path, $client_path, $start_page, $JAVA_HOME );
+            $sm = new ShowdownManager\SM( $http_path, $client_path, $start_page, $JAVA_HOME, $showdown_url, $showdown_port );
 
             $_GET['status'] = (!$_GET['status']) ? $start_page : $_GET['status'];
             switch( $_GET['status'] ) {
@@ -59,19 +53,18 @@
                     $genre = "drama";
                     break;
                 case 4 :
+                    $genre_table_name = 'ENTER_LIST';
+                    $genre_episode_table_name = 'ENTER_EPISODE';
+                    $title = '4. 예능(방영전)';
+                    $genre_where = "STATUS = 1";
+                    $genre = "enter";
+                    break;
+
                 case 5 :
                     $genre_table_name = 'ENTER_LIST';
                     $genre_episode_table_name = 'ENTER_EPISODE';
-                    if ( $merge_tv_enter == 'Y') {
-                        $title = '4+5. 예능';
-                        $genre_where = "STATUS = 1 OR STATUS = 2";
-                    } else if ( $_GET['status'] == 4 ) {
-                        $title = '4. 예능(방영전)';
-                        $genre_where = "STATUS = 1";
-                    } else {
-                        $title = '5. 예능(방영중)';
-                        $genre_where = "STATUS = 2";
-                    }
+                    $title = '5. 예능(방영중)';
+                    $genre_where = "STATUS = 2";
                     $genre = "enter";
                     break;
                 case 6 :
@@ -82,19 +75,17 @@
                     $genre = "enter";
                     break;
                 case 7 :
+                    $genre_table_name = 'TV_LIST';
+                    $genre_episode_table_name = 'TV_EPISODE';
+                    $title = '7. TV(방영전)';
+                    $genre_where = "STATUS = 1";
+                    $genre = "tv";
+                    break;
                 case 8 :
                     $genre_table_name = 'TV_LIST';
                     $genre_episode_table_name = 'TV_EPISODE';
-                    if ( $merge_tv_enter == 'Y') {
-                        $title = '7+8. TV';
-                        $genre_where = "STATUS = 1 OR STATUS = 2";
-                    } else if ( $_GET['status'] == 7 ) {
-                        $title = '7. TV(방영전)';
-                        $genre_where = "STATUS = 1";
-                    } else {
-                        $title = '8. TV(방영중)';
-                        $genre_where = "STATUS = 2";
-                    }
+                    $title = '8. TV(방영중)';
+                    $genre_where = "STATUS = 2";
                     $genre = "tv";
                     break;
                 case 9 :
@@ -107,6 +98,13 @@
             }
 
             // 방송 목록
-            $result = $sm->getOnAirList( $db, $genre_table_name, $genre_where);
+            //$result = $sm->getOnAirList( $db, $genre_table_name, $genre_where);
+
+
+            $sm->connect_socket();
+
+            $genre_status = $_GET['status']%3;
+            $genre_status = ( $genre_status < 1 ) ? 3 : $genre_status;
+            $result = $sm->get_list_socket( strtoupper($genre) , $genre_status);
             break;
     }

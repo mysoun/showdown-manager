@@ -21,7 +21,7 @@ if ( $_SESSION['sm-auth'] === true ) {
                         <form action="#" id="loginForm">
                             <div class="form-group">
                                 <label class="control-label" for="username">ID</label>
-                                <input type="text" placeholder="ID 를 입력화세요" required="" value="" name="username" id="username" class="form-control">
+                                <input type="text" placeholder="ID를 입력하세요" required="" value="" name="username" id="username" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="password">Password</label>

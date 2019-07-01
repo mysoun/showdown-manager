@@ -3,50 +3,33 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
 
 ## 제작 및 구동 환경
  * Synology DSM 6.0
- * Java8
  * Nginx
  * PHP 7.0(5.6+)
  * Kiaalap Template : https://github.com/puikinsh/kiaalap
- * Showdown v1.52 : https://iodides.tistory.com/15
+ * Showdown v1.54 : https://iodides.tistory.com/15
  
 ## 설치 방법 by Synology DSM 6.0
  ```
-    * 혹시 모를 오동작및 DB 오류를 위해 반드시 SQLDB.db를 백업후 진행해 주세요.
-    * 문제 발생시 백업한 DB를 이용해 복구가 가능합니다.
+      
+    1. Showdown 설치 디렉토리에 권한 할당
+        http : 읽기/쓰기
      
-    1. DB백업을 위해 Showdown 프로세스 Kill 
-        $ kill -9 `ps -ef | grep 'Server.jar' | awk '{print $2}'`
-        
-    2. Showdown 설치 디렉토리에 권한 할당
-        http : 읽기/쓰기
- 
-    3. Showdown 디렉토리의 SQLDB.db 파일 백업
-        $ cp -rfp SQLDB.db SQLDB.db.backup
-
-    4. Showdown 디렉토리의 SQLDB.db에 권한 할당
-        http : 읽기/쓰기
-
-    5. Showdown 디렉토리의 Client.jar 파일에 권한 할당
-        http : 읽기/쓰기
-    
-    6. Showdown Manager 설치 디렉토리에 권한 할당
+    2. Showdown Manager 설치 디렉토리에 권한 할당
         http : 읽기
     
-    7. Synology Web Station 설정
-        Nginx + PHP 7.0 or 5.6 + PHP 확장 에서 pdo_sqlite 체크
+    3. Synology Web Station 설정
+        Nginx + PHP 7.0 or 5.6 + PHP 확장 에서 sockets 체크
 
-    8. JAVA8 설치 디렉토리 확인
-        Showdown을 사용중이라면 Consol 접속 가능 할 것.
-        $ echo $JAVA_HOME
-        /var/packages/Java8/target/j2sdk-image/jre
-        
-    9. Showdown Manager 설정 파일 수정
+    4. Showdown Manager 설정 파일 수정
         $ cd [Showdown Manager 설치 디렉토리]
         $ vi config.php
         
             $http_path = ""; // Showdown Manager 설치되어 있는 디렉토리
             $client_path = ""; // Showdown 설치되어 있는 디렉토리
-            $merge_tv_enter = 'N'; // Y or N, Showdown 1.52에 추가된 TV/Enter의 방영 예정을 합쳐서 보여줄지 나눠줄지 선택하는 부분
+
+            $showdown_url = "localhost"; // Shodown이 설치되어 있는 IP, 같은 서버일 경우 localhost ex) localhost
+            $showdown_port = 4040; // Showdown이 동작하는 Port, Showdown config.properties 참조 ex) 4040
+    
             $start_page = 1; // 메뉴 번호 1~7
 
             // Showdown Manager 접속 ID/Passwd 설정. 미설정시 인증 Pass
@@ -56,16 +39,13 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
             // 시놀로지의 경우 폴더 권한에 자식 폴더 및 파일 포함 http 권한 설정 필요
             // Linux 기반사 용자의 경우 showdown의 실행 권한을 showdown-manager web 실행 권한(ex. http)과 showdown 파일들의 소유자를 같이 맞출 필요가 있음
             $show_log_menu = 'N'; 
-        
-            $JAVA_HOME = "/var/packages/Java8/target/j2sdk-image/jre"; // 시스템의 $JAVA_HOME 위치
 
-    10. Showdown Server 구동 및 구동 확인
+    5. Showdown Server 구동 및 구동 확인
         $ nohup ./start.sh &
         $ ps axf | grep java
-            java -jar Server.jar
+            java -jar Server.jar <= 출력 확인
             
-    11. Showdown Client 종료 확인
-        Showdown이 사용하는 sqlite 특성상 cli.sh, cli.bat, Client.jre 등 동작시 정상적으로 작동하지 않습니다.
+    6. Showdown Client 종료 확인
         Showdown Manager를 이용해서 수정할 경우 수정 시점에 Showdown Client가 종료되어 있는 것을 확인해 주세요.
         
 ```    
@@ -109,16 +89,33 @@ iodides님이 제작하신 Showdown을 Web에서 관리할 수 있도록 제작
         - $manager_passwd : 로그인 Password
         showdown 1.52(Beta) 업데이트 대응 관련 메뉴 번호 변경 및 기능 추가
         - config.php에 관련된 추가 항목 있음
-        - $merge_tv_enter = 'N'; // Y or N, Showdown 1.52에 추가된 TV/Enter의 방영 예정을 합쳐서 보여줄지 나눠줄지 선택하는 부분 
+        - $merge_tv_enter = 'N'; // Y or N, Showdown 1.52에 추가된 TV/Enter의 방영 예정을 합쳐서 보여줄지 나눠줄지 선택하는 부분
+        
+    * v1.0.0 / 20190701
+        더 이상 Showdown DB에 직접 접속을 하지 않습니다. 
+        - PHP 확장 기능중 pdo_sqlite를 이용하지 않습니다.
+        더 이상 Showdown Manager는 Java 명령을 수행하지 않습니다.
+        Showdown 1.54 버전에 추가된 API 기능을 이용하게 변경 되었습니다. 
+        - PHP 확장 기능중 sockets를 이용합니다.  
+        프로그램 검색/추가/삭제/이름변경 기능이 추가되었습니다.
+        개별 에피소드의 모니터링 상태 변경 기능이 제거 되었습니다.
+        예정/방영중 프로그램을 같이 보여주는 기능이 제거 되었습니다.
+        config.php에 관련된 추가 항목 있음
+        - $showdown_url : Shodown이 설치되어 있는 IP, 같은 서버일 경우 localhost ex) localhost
+        - $showdown_port : Showdown이 동작하는 Port, Showdown config.properties 참조 ex) 4040
+    
+        
+        @@ Showdown Client가 실행된 상태에서는 Showdown Manager가 동작하지 않습니다.
+         
             
 ## 알려진 버그
-    * 현재 500개 이상되는 에피소드를 가진 방송의 경우 모든 에피소드 정보가 안보여 지는 이슈
+    
     
 ## 남기는 말
   먼저 Showdown을 제작 및 공개해주신 iodides님께 감사드립니다.<br>
   기본적인 기능만 급하게 만들게 되어 보안 및 소스 코드의 구조화등 많은 부분이 부족한 소스 입니다.<br> 
-  동작 방식은 최대한 iodides님이 만든 형태를 안건드리는 형태 입니다.<br>
-  그로 인해 일부 기능은 현재 Shell(client.sh)에서만 가능 합니다.<br>
+  1.0.0 부터 Showdown 1.54에 추가된 API 기능을 이용하게 변경 되었습니다.
+  대부분의 기능이 구현되었습니다. 일부 기능은 추후 업데이트 하도록 하겠습니다.<br>
   이용에 참고해 주세요.<br>
   Showdown을 사용함에 있어 조금이나마 도움이 되었으면 합니다.
   

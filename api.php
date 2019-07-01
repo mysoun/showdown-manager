@@ -20,71 +20,58 @@
     $sm->genre = $_GET['genre'];
     $sm->resolution = $_GET['resolution'];
 
-    $sm->set_table_name();
-
-    $sm->set_resolution_name();
-
     $sm->sid = $_GET['sid'];
     $sm->type = $_GET['type'];
     $sm->episode = $_GET['episode'];
-
-    $sm->preprocesing( $db );
+    $sm->name = $_GET['name'];
 
     $type = $sm->type;
     $title = $sm->title;
-    $shell_resolution = $sm->shell_resolution;
-
-    unset($sm);
-
-    function get_system_call( $cmd ) {
-        $last_line = exec( $cmd, $return_var );
-
-        return [ 'last_line' => $last_line, 'return_var' => $return_var ];
-    }
-
-    @chdir( $client_path );
 
     switch( $type ) {
-        case 'drama_add' :
+        case 'search' :
+            $_GET['keyword'] = trim( $_GET['keyword'] );
+
+            if ( $_GET['keyword'] != '' ) $json_result = $sm->get_search_socket( $_GET['keyword']);
+            echo json_encode($json_result);
+
             break;
-        case 'tv_add' :
+        case 'rename' :
+            $_GET['new_name'] = trim( $_GET['new_name'] );
+
+            if ( $_GET['new_name'] != '' ) $sm->set_rename_socket( $_GET['new_name']);
             break;
-        case 'drama_del' :
+
+        case 'monitor' :
+                $sm->set_all_monitor_socket();
             break;
-        case 'tv_del' :
+
+        case 'all_episode_download_on' :
+                $sm->set_all_download_socket( 'Y');
             break;
-/*
-        case 'drama_start' :
-            $sr = get_system_call("java -jar Client.jar start drama \"{$title}\" {$shell_resolution}" );
+
+        case 'all_episode_download_off' :
+                $sm->set_all_download_socket( 'N');
             break;
-        case 'enter_start' :
-            $sr = get_system_call("java -jar Client.jar start enter \"{$title}\" {$shell_resolution}" );
+
+        case 'episode_download_on_off' :
+                if ( $_GET['complete'] == 'Y' ) $sm->set_download_socket( 'N' );
+                else  $sm->set_download_socket( 'Y' );
             break;
-        case 'tv_start' :
-            $sr = get_system_call("java -jar Client.jar start tv \"{$title}\" {$shell_resolution}" );
+
+        case 'add' :
+            $_GET['keyword'] = trim( $_GET['keyword'] );
+
+            if ( $_GET['keyword'] != '' ) $json_result = $sm->add_program_socket( $_GET['keyword']);
+            echo json_encode($json_result);
             break;
-        case 'drama_stop' :
-            $sr = get_system_call("java -jar Client.jar stop drama \"{$title}\" {$shell_resolution}" );
+
+        case 'delete' :
+            $sm->del_program_socket();
             break;
-        case 'enter_stop' :
-            $sr = get_system_call("java -jar Client.jar stop enter \"{$title}\" {$shell_resolution}" );
-            break;
-        case 'tv_stop' :
-            $sr = get_system_call("java -jar Client.jar stop tv \"{$title}\" {$shell_resolution}" );
-            break;
-*/
-        case 'drama_search' :
-            break;
-        case 'tv_search' :
-            break;
-        case 'enter_search' :
-            break;
+
         default :
             break;
     }
-
-    echo $sr['last_line'];
-
-    @chdir( $http_path );
 
     include_once("./php_footer.php");
