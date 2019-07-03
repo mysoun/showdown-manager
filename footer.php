@@ -465,10 +465,11 @@
                 dataType:"JSON"
             }).done(function (msg) {
                 btn_lock = false;
-                if ( msg.result == 'true' ) location.reload();
-                else {
-                    alert("프로그램을 추가 할 수 없습니다.");
-                }
+                location.reload();
+                //if ( msg.result == 'true' ) location.reload();
+                //else {
+                //    alert("프로그램을 추가 할 수 없습니다.");
+                //}
             });
         };
     }
